@@ -32,5 +32,24 @@
 <label for="import">Import level JSON</label><input id="import" type="file" accept=".json,application/json">
 <button id="restore" type="button">Restore example level</button>
 </fieldset></div><p id="editor-status" role="status" aria-live="polite">Editor ready.</p></section>
-</main><script type="module" src="./src/app.mjs"></script>
+<section id="physics-settings" aria-labelledby="physics-heading">
+<h2 id="physics-heading">Player physics settings</h2>
+<p>Edit values, then choose Apply Physics Settings. Changes affect gameplay immediately. Export the level JSON to save them.</p>
+<div class="editor-grid"><fieldset><legend>Movement</legend>
+<label for="physics-acceleration">Acceleration (pixels per second squared)</label><input id="physics-acceleration" type="number" min="0" max="10000" step="10">
+<label for="physics-maxSpeed">Maximum run speed (pixels per second)</label><input id="physics-maxSpeed" type="number" min="0" max="2000" step="5">
+<label for="physics-friction">Friction (pixels per second squared)</label><input id="physics-friction" type="number" min="0" max="10000" step="10"></fieldset>
+<fieldset><legend>Jumping</legend>
+<label for="physics-jumpSpeed">Jump strength (pixels per second)</label><input id="physics-jumpSpeed" type="number" min="0" max="2000" step="5">
+<label for="physics-jumpCut">Jump cut multiplier (0–1, lower shortens tap jumps)</label><input id="physics-jumpCut" type="number" min="0" max="1" step="0.01">
+<label for="physics-coyote">Coyote time (seconds)</label><input id="physics-coyote" type="number" min="0" max="1" step="0.01">
+<label for="physics-buffer">Jump buffer (seconds)</label><input id="physics-buffer" type="number" min="0" max="1" step="0.01"></fieldset>
+<fieldset><legend>Gravity and platforms</legend>
+<label for="physics-gravity">Gravity (pixels per second squared)</label><input id="physics-gravity" type="number" min="0" max="10000" step="10">
+<label for="physics-maxFall">Maximum fall speed (pixels per second)</label><input id="physics-maxFall" type="number" min="0" max="2000" step="5">
+<label for="physics-dropTime">Drop-through duration (seconds)</label><input id="physics-dropTime" type="number" min="0.01" max="2" step="0.01"></fieldset></div>
+<p id="jump-estimate">Estimated maximum jump height will appear here.</p>
+<div class="toolbar"><button type="button" id="apply-physics">Apply Physics Settings</button><button type="button" id="reset-physics">Reset Physics to Defaults</button></div>
+<p id="physics-status" role="status" aria-live="polite">Default physics loaded.</p>
+</section></main><script type="module" src="./src/app.mjs"></script>
 </body></html>
