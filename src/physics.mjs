@@ -1,6 +1,7 @@
 import { TILE, tileAt } from './level.mjs';
+import { DEFAULT_PHYSICS } from './physics-settings.mjs';
 
-export const PHYSICS = Object.freeze({ acceleration: 1500, maxSpeed: 205, friction: 1800, gravity: 1450, jumpSpeed: 490, jumpCut: 0.46, maxFall: 720, coyote: 0.11, buffer: 0.12, dropTime: 0.25 });
+export const PHYSICS = DEFAULT_PHYSICS;
 export const PLAYER_WIDTH = 24;
 export const PLAYER_HEIGHT = 30;
 
