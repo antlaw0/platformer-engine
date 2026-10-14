@@ -43,10 +43,8 @@ function resizeCanvas() {
 function render() {
   const scale = canvas.height / viewportHeight;
   ctx.setTransform(scale, 0, 0, scale, 0, 0);
-  ctx.fillStyle = '#9bd1f2';
+  ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, viewportWidth, viewportHeight);
-  ctx.fillStyle = '#cce8f7';
-  ctx.fillRect(0, viewportHeight - 90, viewportWidth, 90);
   const firstX = Math.max(0, Math.floor(cameraX / TILE));
   const lastX = Math.min(level.width - 1, Math.ceil((cameraX + viewportWidth) / TILE));
   const firstY = Math.max(0, Math.floor(cameraY / TILE));
@@ -72,7 +70,7 @@ function render() {
   } // end layer loop
   const avatarX = playing ? player.x : level.spawn.x * TILE + 4;
   const avatarY = playing ? player.y : level.spawn.y * TILE + 2;
-  ctx.fillStyle = '#3a368c';
+  ctx.fillStyle = '#a68aff';
   ctx.fillRect(avatarX - cameraX, avatarY - cameraY, 24, 30);
   ctx.fillStyle = '#fff';
   ctx.fillRect(avatarX - cameraX + (player.facing > 0 ? 15 : 5), avatarY - cameraY + 7, 4, 4);
