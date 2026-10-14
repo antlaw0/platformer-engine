@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Platformer Engine: First Steps</title><link rel="stylesheet" href="./styles.css"></head>
+<body>
+<header><h1>Platformer Engine</h1><p>Milestone 1: playable demo and accessible tile editor.</p></header>
+<main>
+<section aria-labelledby="game-heading"><h2 id="game-heading">Game preview</h2>
+<div class="toolbar"><button id="play" type="button" aria-pressed="false">Start playing</button><button id="restart" type="button">Restart player</button><span id="game-status" role="status">Editor mode. Start playing when ready.</span></div>
+<div id="game-frame"><canvas id="game" width="640" height="360" tabindex="0" aria-label="Game preview: Left and Right or A and D to move, Space to jump, Down and Jump to drop through one-way platforms."></canvas>
+<div id="touch" aria-label="Touch game controls"><div class="buttons"><button type="button" data-control="left" aria-label="Move left">◀</button><button type="button" data-control="right" aria-label="Move right">▶</button></div><div class="buttons"><button type="button" data-control="down" aria-label="Down">▼</button><button type="button" data-control="jump" aria-label="Jump">Jump</button></div></div></div>
+<p class="hint">Keyboard: A/D or Left/Right to move, Space/W/Up to jump. Down + Jump drops through one-way platforms. Gamepads and touch buttons are supported.</p></section>
+<section aria-labelledby="editor-heading"><h2 id="editor-heading">Accessible level editor</h2><p>All editing features are available through labeled controls. Coordinates are zero-based.</p>
+<div class="editor-grid"><fieldset><legend>Level</legend>
+<label for="level-name">Level name</label><input id="level-name" type="text" maxlength="100">
+<label for="level-width">Width in tiles</label><input id="level-width" type="number" min="5" max="500" step="1">
+<label for="level-height">Height in tiles</label><input id="level-height" type="number" min="5" max="100" step="1">
+<button id="resize" type="button">Update level dimensions</button></fieldset>
+<fieldset><legend>Tile tools</legend>
+<label for="layer">Layer</label><select id="layer"><option value="background">Background</option><option value="terrain" selected>Terrain</option><option value="foreground">Foreground</option></select>
+<label for="tile-type">Tile type</label><select id="tile-type"><option value="solid">Solid</option><option value="oneWay">One-way</option><option value="decoration">Decoration</option></select>
+<label for="x">Grid X</label><input id="x" type="number" min="0" step="1" value="3">
+<label for="y">Grid Y</label><input id="y" type="number" min="0" step="1" value="6">
+<label for="rect-width">Rectangle width</label><input id="rect-width" type="number" min="1" step="1" value="1">
+<label for="rect-height">Rectangle height</label><input id="rect-height" type="number" min="1" step="1" value="1">
+<div class="toolbar"><button id="place" type="button">Place tile</button><button id="fill" type="button">Fill rectangle</button><button id="erase" type="button">Erase rectangle</button><button id="inspect" type="button">Inspect tile</button></div>
+<p class="hint">Terrain tiles can be solid or one-way; background and foreground tiles do not collide.</p></fieldset>
+<fieldset><legend>Navigate and save</legend>
+<label for="jump-x">Camera grid X</label><input id="jump-x" type="number" min="0" step="1" value="0">
+<label for="jump-y">Camera grid Y</label><input id="jump-y" type="number" min="0" step="1" value="0">
+<button id="jump-camera" type="button">Jump camera to coordinate</button>
+<button id="export" type="button">Export level JSON</button>
+<label for="import">Import level JSON</label><input id="import" type="file" accept=".json,application/json">
+<button id="restore" type="button">Restore example level</button>
+</fieldset></div><p id="editor-status" role="status" aria-live="polite">Editor ready.</p></section>
+</main><script type="module" src="./src/app.mjs"></script>
+</body></html>
