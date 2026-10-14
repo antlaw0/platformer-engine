@@ -1,11 +1,15 @@
 :root { color-scheme:dark; font-family:system-ui,sans-serif; background:#101827; color:#f2f6fc; }
-* { box-sizing:border-box; } body { margin:0; } header,main { max-width:1120px; margin:auto; padding:1rem; } h1 { margin:0 0 .4rem; } header p { margin:.2rem 0; } section { margin-bottom:2rem; }
+* { box-sizing:border-box; } body { margin:0; } header,main { width:100%; max-width:1920px; margin:auto; padding:1rem clamp(1rem,2vw,2.5rem); } h1 { margin:0 0 .4rem; } header p { margin:.2rem 0; } section { margin-bottom:2rem; }
 .toolbar { display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; margin:.7rem 0; } button,input,select { font:inherit; }
 button { padding:.55rem .8rem; border:1px solid #bad2ed; border-radius:.45rem; background:#243e63; color:white; cursor:pointer; } button:hover { background:#365780; } button[aria-pressed="true"] { background:#38653b; }
 :focus-visible { outline:3px solid #ffe47a; outline-offset:3px; } label { font-weight:600; display:block; margin-top:.6rem; }
 input,select { width:100%; margin-top:.15rem; padding:.4rem; border:2px solid #9eacc0; border-radius:.3rem; background:#f5f7fc; color:#121b2a; } input[type="file"] { background:#1f3148; color:white; }
-.editor-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr)); gap:1rem; align-items:start; } fieldset { min-width:0; border:1px solid #8195b2; border-radius:.5rem; padding:1rem; } legend { font-weight:700; } .hint { color:#cdd9e7; font-size:.92rem; }
-#game-frame { width:100%; aspect-ratio:16/9; position:relative; overflow:hidden; background:#243450; touch-action:none; } #game { width:100%; height:100%; display:block; }
+.editor-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); gap:1.25rem; align-items:start; } fieldset { min-width:0; border:1px solid #8195b2; border-radius:.5rem; padding:1rem; } legend { font-weight:700; } .hint { color:#cdd9e7; font-size:.92rem; }
+#game-frame { width:100%; max-width:calc((100dvh - 150px) * 16 / 9); aspect-ratio:16/9; position:relative; overflow:hidden; background:#000; touch-action:none; margin:0 auto; border:1px solid #63778d; } #game { width:100%; height:100%; display:block; }
 #touch { position:absolute; inset:0; display:flex; justify-content:space-between; align-items:flex-end; padding:.7rem max(.7rem,env(safe-area-inset-right)) .7rem max(.7rem,env(safe-area-inset-left)); pointer-events:none; }
 .buttons { display:flex; align-items:flex-end; gap:.45rem; pointer-events:auto; } #touch button { touch-action:none; user-select:none; min-width:3.5rem; min-height:3.5rem; border:2px solid #d8e7f1; border-radius:1rem; background:#172c43b8; } #touch button[data-control="jump"] { min-width:5rem; min-height:5rem; border-radius:50%; font-weight:700; }
 @media (hover:hover) and (pointer:fine) { #touch { opacity:.45; } }
+
+/* Keep the playable viewport large on desktop without pushing all editing controls off screen. */
+@media (max-width:700px) { #game-frame { max-width:none; } .editor-grid { grid-template-columns:minmax(0,1fr); } }
+@media (min-width:1200px) { main { max-width:1920px; } fieldset { padding:1.25rem; } }
