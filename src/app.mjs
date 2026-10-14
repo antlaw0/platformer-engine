@@ -1,11 +1,14 @@
 import { TILE, LAYERS, demoLevel, resizeLevel, validateLevel, tileAt, keyOf } from './level.mjs';
-import { PHYSICS, createPlayer, stepPlayer } from './physics.mjs';
+import { createPlayer, stepPlayer } from './physics.mjs';
+import { PHYSICS_LIMITS, defaultPhysics, validatePhysics, estimatedJumpHeight } from './physics-settings.mjs';
 import { Input } from './input.mjs';
 
 const $ = (id) => document.getElementById(id);
 const canvas = $('game');
 const ctx = canvas.getContext('2d', { alpha: false });
 let level = demoLevel();
+let activePhysics = defaultPhysics();
+level.physics = { ...activePhysics };
 let player = createPlayer(level);
 let playing = false;
 let cameraX = 0;
@@ -15,6 +18,26 @@ const viewportHeight = 360;
 const input = new Input();
 const colors = { solid: '#416f46', oneWay: '#d3a95c', decoration: '#7596c2' };
 
+function physicsStatus(message) { $('physics-status').textContent = message; } // end physicsStatus
+function syncPhysicsFields() {
+  for (const name of Object.keys(PHYSICS_LIMITS)) $('physics-' + name).value = String(activePhysics[name]);
+  const height = estimatedJumpHeight(activePhysics);
+  $('jump-estimate').textContent = height ? `Estimated full jump height: ${height.pixels.toFixed(0)} pixels (${height.tiles.toFixed(1)} tiles).` : 'No natural jump apex when gravity is zero.';
+} // end syncPhysicsFields
+function readPhysicsFields() {
+  const values = {};
+  for (const name of Object.keys(PHYSICS_LIMITS)) {
+    const input = $('physics-' + name);
+    if (input.value.trim() === '') throw new Error(name + ' cannot be empty.');
+    values[name] = Number(input.value);
+  } // end fields
+  return validatePhysics(values);
+} // end readPhysicsFields
+function setPhysics(config) {
+  activePhysics = validatePhysics(config);
+  level.physics = { ...activePhysics };
+  syncPhysicsFields();
+} // end setPhysics
 function status(message) { $('editor-status').textContent = message; } // end status
 function gameStatus(message) { $('game-status').textContent = message; } // end gameStatus
 function clamp(value, minimum, maximum) { return Math.min(Math.max(value, minimum), Math.max(minimum, maximum)); } // end clamp
@@ -118,7 +141,7 @@ function frame(now) {
       const action = { ...lastHeld, jumpPressed: pendingPressed, jumpReleased: pendingReleased };
       pendingPressed = false;
       pendingReleased = false;
-      if (!stepPlayer(player, level, action, dt, PHYSICS)) {
+      if (!stepPlayer(player, level, action, dt, activePhysics)) {
         resetPlayer();
         gameStatus('Player fell into a pit and respawned.');
       } // end respawn condition
@@ -220,14 +243,21 @@ $('import').addEventListener('change', async (event) => {
     if (file.size > 2_000_000) throw new Error('File exceeds the 2 MB import limit.');
     const imported = validateLevel(JSON.parse(await file.text()));
     level = imported;
+    setPhysics(imported.physics);
     stopPlaying(); resetPlayer(); syncLevelFields();
     status(`Imported level ${level.name}, ${level.width} by ${level.height} tiles.`);
   } catch (error) { status('Import failed: ' + error.message); }
   finally { event.target.value = ''; }
 }); // end import handler
-$('restore').addEventListener('click', () => { level = demoLevel(); stopPlaying(); resetPlayer(); syncLevelFields(); status('Restored the example level.'); });
+$('restore').addEventListener('click', () => { level = demoLevel(); setPhysics(defaultPhysics()); stopPlaying(); resetPlayer(); syncLevelFields(); status('Restored the example level.'); });
 
+$('apply-physics').addEventListener('click', () => {
+  try { setPhysics(readPhysicsFields()); physicsStatus('Physics applied immediately. Export level JSON to save changes.'); }
+  catch(error) { physicsStatus('Could not apply physics: ' + error.message); }
+}); // end apply handler
+$('reset-physics').addEventListener('click', () => { setPhysics(defaultPhysics()); physicsStatus('Physics reset and applied.'); }); // end reset handler
 syncLevelFields();
+syncPhysicsFields();
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 new ResizeObserver(resizeCanvas).observe($('game-frame'));
