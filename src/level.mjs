@@ -1,3 +1,4 @@
+import { defaultPhysics, validatePhysics } from './physics-settings.mjs';
 export const TILE = 32;
 export const LAYERS = ['background', 'terrain', 'foreground'];
 export const TYPES = ['solid', 'oneWay', 'decoration'];
@@ -36,6 +37,7 @@ export function validateLevel(value) {
       clean.layers[layer][key] = type;
     } // end tile loop
   } // end layer loop
+  clean.physics = value.physics === undefined ? defaultPhysics() : validatePhysics(value.physics);
   return clean;
 } // end validateLevel
 
