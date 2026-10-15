@@ -7,10 +7,12 @@ First playable vertical slice of a browser-based 2D platformer with keyboard/scr
 Run this command from the project folder:
 
 ```powershell
-py -m http.server 8000
+py dev_server.py
 ```
 
-Open http://localhost:8000 in Chrome, Firefox or Edge. Stop the server with Ctrl+C. A local server is needed because the game uses ES modules.
+Open http://localhost:8000 in Chrome, Firefox or Edge. Stop the server with Ctrl+C. This development server supports `.mjs` JavaScript modules and automatically reloads the browser when local HTML, CSS, JavaScript, level JSON, or image/audio files change. No restart is needed after editing project files or running `git pull`. The server does not automatically fetch GitHub changes; run `git pull origin main` when new commits are available. Browser auto-refresh reloads the page and resets unsaved in-memory edits, so export your level JSON first when necessary.
+
+To use a different port, run `py dev_server.py --port 8001`. No Python packages are required.
 
 ## Controls
 
